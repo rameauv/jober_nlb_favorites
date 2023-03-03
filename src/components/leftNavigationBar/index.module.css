@@ -1,0 +1,9 @@
+.leftBavigationBar {
+    width: 200px;
+    position: fixed;
+    height: 100%;
+}
+
+.menu {
+    height: 100%;
+}
