@@ -4,6 +4,41 @@ import MENUS from "./menus";
 import styles from "./index.module.css"
 import {StarOutlined, StarFilled} from "@ant-design/icons";
 
+function useMenuItemsElements(menuItems, favoritedItems, addToFavorites) {
+  return useMemo(() => {
+    return menuItems.map(({key, label, icon}) => {
+      const isFavorited = favoritedItems.find(favoritedItem => favoritedItem.key === key) === undefined;
+
+      return (
+          <Menu.Item key={key} icon={icon}>
+            <span>{label}</span>
+            {
+                isFavorited &&
+                <StarOutlined
+                    className={styles.starIcon}
+                    onClick={() => addToFavorites(key)}
+                />
+            }
+          </Menu.Item>
+      )
+    })
+  }, [menuItems, favoritedItems, addToFavorites])
+}
+
+function useFavoritedMenuItemsElements(favoritedItems, removeFromFavorites) {
+  return useMemo(() => {
+    return favoritedItems.map(({key, label, icon}) => (
+        <Menu.Item key={`favorited-${key}`} icon={icon}>
+          <span>{label}</span>
+          <StarFilled
+              className={styles.starIcon}
+              onClick={() => removeFromFavorites(key)}
+          />
+        </Menu.Item>
+    ));
+  }, [favoritedItems, removeFromFavorites]);
+}
+
 const LeftNavigationBar = () => {
   const menuDictionary = useMemo(() => {
     return new Map(
@@ -17,8 +52,8 @@ const LeftNavigationBar = () => {
 
   function addToFavorites(key) {
     setFavoritedItems(currentFavoritedItems => {
-      console.log(menuDictionary);
       const item = menuDictionary.get(key);
+
       if (item === undefined) {
         console.error(`could not find the menu item associated with the key:${key}`); // log the error on a crash reporting service
       }
@@ -35,6 +70,9 @@ const LeftNavigationBar = () => {
     });
   }
 
+  const favoritedMenuItemsEmlements = useFavoritedMenuItemsElements(favoritedItems, removeFromFavorites);
+  const menuItemsElements = useMenuItemsElements(MENUS, favoritedItems, addToFavorites);
+
   return (
       <div className={styles.leftBavigationBar}>
         <Menu
@@ -43,28 +81,9 @@ const LeftNavigationBar = () => {
             mode="inline"
             theme="dark"
         >
-          {favoritedItems.map(({key, label, icon}) => (
-              <Menu.Item key={`liked-${key}`} icon={icon}>
-                <span>{label}</span>
-                <StarFilled
-                    className={styles.starIcon}
-                    onClick={() => removeFromFavorites(key)}
-                />
-              </Menu.Item>
-          ))}
+          {favoritedMenuItemsEmlements}
           {favoritedItems.length && <Menu.Divider/>}
-          {MENUS.map(({key, label, icon}) => (
-              <Menu.Item key={key} icon={icon}>
-                <span>{label}</span>
-                {
-                    favoritedItems.find(favoritedItem => favoritedItem.key === key) === undefined &&
-                    <StarOutlined
-                        className={styles.starIcon}
-                        onClick={() => addToFavorites(key)}
-                    />
-                }
-              </Menu.Item>
-          ))}
+          {menuItemsElements}
         </Menu>
       </div>
   );
