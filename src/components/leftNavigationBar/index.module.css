@@ -7,3 +7,10 @@
 .menu {
     height: 100%;
 }
+
+.starIcon {
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    transform: translateY(50%);
+}

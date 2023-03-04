@@ -46,7 +46,10 @@ const LeftNavigationBar = () => {
           {favoritedItems.map(({key, label, icon}) => (
               <Menu.Item key={`liked-${key}`} icon={icon}>
                 <span>{label}</span>
-                <StarFilled onClick={() => removeFromFavorites(key)}/>
+                <StarFilled
+                    className={styles.starIcon}
+                    onClick={() => removeFromFavorites(key)}
+                />
               </Menu.Item>
           ))}
           {favoritedItems.length && <Menu.Divider/>}
@@ -56,6 +59,7 @@ const LeftNavigationBar = () => {
                 {
                     favoritedItems.find(favoritedItem => favoritedItem.key === key) === undefined &&
                     <StarOutlined
+                        className={styles.starIcon}
                         onClick={() => addToFavorites(key)}
                     />
                 }
