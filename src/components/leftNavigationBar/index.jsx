@@ -17,6 +17,7 @@ function useMenuItemsElements(menuItems, favoritedItems, addToFavorites) {
                 <StarOutlined
                     className={styles.starIcon}
                     onClick={() => addToFavorites(key)}
+                    data-cy="add-to-favorites-button"
                 />
             }
           </Menu.Item>
@@ -33,6 +34,7 @@ function useFavoritedMenuItemsElements(favoritedItems, removeFromFavorites) {
           <StarFilled
               className={styles.starIcon}
               onClick={() => removeFromFavorites(key)}
+              data-cy="remove-from-favorites-button"
           />
         </Menu.Item>
     ));

@@ -11,7 +11,8 @@
     "react-scripts": "4.0.0"
   },
   "devDependencies": {
-    "@babel/runtime": "7.13.8"
+    "@babel/runtime": "7.13.8",
+    "cypress": "^12.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
